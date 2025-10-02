@@ -1,20 +1,29 @@
--- Products table
-CREATE TABLE IF NOT EXISTS products (
+
+DROP TABLE IF EXISTS history;
+DROP TABLE IF EXISTS purchase_items;
+DROP TABLE IF EXISTS purchases;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS products;
+
+CREATE TABLE products (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  code_bar VARCHAR(50) UNIQUE NOT NULL,
+  barcode VARCHAR(50) UNIQUE NOT NULL,
   name VARCHAR(50) NOT NULL,
   price DECIMAL(10,2) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS purchases (
+
+DROP TABLE IF EXISTS purchases;
+CREATE TABLE purchases (
   id INT AUTO_INCREMENT PRIMARY KEY,
   product_id INT NOT NULL,
   quantity INT NOT NULL,
-  purchase_date DATETIME NOT NULL
+  purchase_date DATETIME NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
--- Purchase items table
-CREATE TABLE IF NOT EXISTS purchase_items (
+DROP TABLE IF EXISTS purchase_items;
+CREATE TABLE purchase_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   purchase_id INT NOT NULL,
   product_id INT NOT NULL,
@@ -23,15 +32,16 @@ CREATE TABLE IF NOT EXISTS purchase_items (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
--- Users table (optional)
-CREATE TABLE IF NOT EXISTS users (
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100),
   email VARCHAR(100)
 );
 
--- Purchase history table (optional)
-CREATE TABLE IF NOT EXISTS history (
+
+DROP TABLE IF EXISTS history;
+CREATE TABLE history (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
   purchase_id INT,
